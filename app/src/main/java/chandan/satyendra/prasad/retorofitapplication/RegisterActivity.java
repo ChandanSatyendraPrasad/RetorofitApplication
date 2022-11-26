@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import chandan.satyendra.prasad.retorofitapplication.api.RetrofitClient;
 import chandan.satyendra.prasad.retorofitapplication.api.ServerInterface;
 import chandan.satyendra.prasad.retorofitapplication.pojo.User;
 import retrofit2.Call;
@@ -33,7 +34,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class RegisterActivity extends AppCompatActivity {
-    TextView textView_login;
+    TextView textView_login, textView_all_user;
     EditText s_users_name, s_users_email, s_users_mobile, s_users_password;
     String users_name, users_email, users_mobile, users_password;
 
@@ -52,6 +53,14 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+            }
+        });
+        textView_all_user.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //startActivity(new Intent(RegisterActivity.this, GetUserActivityResponse.class));
+                startActivity(new Intent(RegisterActivity.this, GetUserActivity.class));
+
             }
         });
         button_register.setOnClickListener(new View.OnClickListener() {
@@ -80,17 +89,9 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void register_user() {
         displayloader();
-        Gson gson = new GsonBuilder().setLenient().create();
 
-        Retrofit retrofit_r = new Retrofit.Builder()
-                .baseUrl(ServerInterface.LOGIN_URL)
-                .addConverterFactory(ScalarsConverterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .build();
-
-        ServerInterface loginInterface = retrofit_r.create(ServerInterface.class);
-        Call<User> userCall = loginInterface.getUserRegister(users_name,users_email, users_mobile,users_password);
-        System.out.println("Test PASS 0 " + users_name + " " +users_email+" "+ users_mobile+"   " +users_password);
+        Call<User> userCall = RetrofitClient.getInstance().getMyApi().getUserRegister(users_name, users_email, users_mobile, users_password);
+        System.out.println("Test PASS 0 " + users_name + " " + users_email + " " + users_mobile + "   " + users_password);
         userCall.enqueue(new Callback<User>() {
             @Override
             public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
@@ -105,9 +106,9 @@ public class RegisterActivity extends AppCompatActivity {
                         progressDialog.dismiss();
                         Toast.makeText(RegisterActivity.this, user.getMessage(), Toast.LENGTH_SHORT).show();
                         //Data for Dashboard
-                        d_users_name=users_name;
-                        d_users_email=users_email;
-                        d_users_mobile=users_mobile;
+                        d_users_name = users_name;
+                        d_users_email = users_email;
+                        d_users_mobile = users_mobile;
                         startActivity(new Intent(RegisterActivity.this, Dashboard.class));
                     } else {
                         progressDialog.dismiss();
@@ -190,5 +191,6 @@ public class RegisterActivity extends AppCompatActivity {
         s_users_mobile = findViewById(R.id.editTextPhone);
         s_users_password = findViewById(R.id.editTextPassword);
         button_register = findViewById(R.id.buttonRegister);
+        textView_all_user = findViewById(R.id.textGetAllUser);
     }
 }

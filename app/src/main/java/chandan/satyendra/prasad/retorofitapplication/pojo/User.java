@@ -28,7 +28,7 @@ public class User {
     @Expose
     private String status;
 
-     @SerializedName("message")
+    @SerializedName("message")
     @Expose
     private String message;
 
@@ -47,6 +47,7 @@ public class User {
     public void setStatus(String status) {
         this.status = status;
     }
+
     public String getUsersId() {
         return usersId;
     }
@@ -94,5 +95,6 @@ public class User {
     public void setUsersDor(String usersDor) {
         this.usersDor = usersDor;
     }
+
 
 }

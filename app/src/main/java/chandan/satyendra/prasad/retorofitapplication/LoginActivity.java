@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import chandan.satyendra.prasad.retorofitapplication.api.RetrofitClient;
 import chandan.satyendra.prasad.retorofitapplication.api.ServerInterface;
 import chandan.satyendra.prasad.retorofitapplication.pojo.User;
 import retrofit2.Call;
@@ -90,18 +91,9 @@ public class LoginActivity extends AppCompatActivity {
     private void login() {
 
         displayLoader();
-        Gson gson = new GsonBuilder().setLenient().create();
 
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(ServerInterface.LOGIN_URL)
-                .addConverterFactory(ScalarsConverterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .build();
-
-        ServerInterface api = retrofit.create(ServerInterface.class);
-
-        Call<User> call = api.getUserLogin(users_email, users_password);
+        Call<User> call = RetrofitClient.getInstance().getMyApi().getUserLogin(users_email, users_password);
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {

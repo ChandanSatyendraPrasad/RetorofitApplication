@@ -101,6 +101,15 @@
             android:text="@string/already_registered_nlogin_here"
             android:textAlignment="center"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
+        <TextView
+            android:id="@+id/textGetAllUser"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/already_registered_user_here"
+            android:textAlignment="center"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
 
 
     </LinearLayout>
